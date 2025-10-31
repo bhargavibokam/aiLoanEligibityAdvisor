@@ -103,7 +103,7 @@ def prediction_page():
         totalincomelog = np.log(ApplicantIncome + CoapplicantIncome)
         LoanAmountlog = np.log(LoanAmount)
         Loan_Amount_Termlog = np.log(Loan_Amount_Term)
-        if credit < 1000 and credit >= 800:
+        if credit <= 1000 and credit >= 800:
             credit = 1
         else :
             credit = 0
@@ -160,9 +160,9 @@ def show_chatbot_page():
 def footer():
     st.markdown("---")
     st.markdown("### 🌐 Connect with us")
-    st.markdown("[LinkedIn](https://www.linkedin.com/in/bhargavibokam/)")
-    st.markdown("[GitHub](https://github.com/bhargavibokam)")
-    st.markdown("📧 Email:  bokambhargavi789@gmail.com")
+    st.markdown("[LinkedIn]()")
+    st.markdown("[GitHub]()")
+    st.markdown("📧 Email: chetanvarmaatla@gmail.com")
 
 # Sidebar Layout Design Enhancement
 def sidebar_layout():
