@@ -1,0 +1,227 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Loan Chatbot</title>
+  <style> 
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f2f5f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+
+  .chat-container {
+    background: #ffffff;
+    width: 80vw;        /* Use 80% of viewport width */
+    max-width: 900px;   /* Limit max width for wide screens */
+    height: 600px;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .chat-box {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    border-bottom: 2px solid #1976d2;
+    scrollbar-width: thin;
+    scrollbar-color: #90caf9 transparent;
+  }
+
+  .chat-box::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .chat-box::-webkit-scrollbar-thumb {
+    background-color: #90caf9;
+    border-radius: 10px;
+  }
+
+  .chat-message {
+    margin: 12px 0;
+    padding: 12px 18px;
+    border-radius: 20px;
+    max-width: 60vw;
+    max-width: 550px;
+    word-wrap: break-word;
+    font-size: 16px;
+    line-height: 1.5;
+    box-shadow: 0 1px 3px rgba(25, 118, 210, 0.1);
+  }
+
+  .bot {
+    background: #d6e4ff;         /* light medium blue */
+    align-self: flex-start;
+    color: #1565c0;              /* darker but medium blue */
+    font-weight: 600;
+    border-top-left-radius: 0;
+  }
+
+  .user {
+    background: #90caf9;         /* medium-light blue */
+    color: #0d47a1;
+    align-self: flex-end;
+    font-weight: 500;
+    border-top-right-radius: 0;
+  }
+
+  /* Full width, distinct style for explanations */
+  .explanation {
+    max-width: 98% !important;
+    background: #e3f2fd;         /* very light blue */
+    color: #0d47a1;
+    padding: 15px 20px;
+    border-radius: 12px;
+    font-size: 16px;
+    line-height: 1.6;
+    box-shadow: none;
+    margin: 12px 0;
+    word-wrap: break-word;
+    align-self: center;
+  }
+
+  .input-container {
+    display: flex;
+    border-top: 2px solid #1976d2;
+    background: #f9fbfd;
+    padding: 12px 16px;
+  }
+
+  input {
+    flex: 1;
+    padding: 14px 20px;
+    border: 2px solid #1976d2;
+    border-radius: 30px 0 0 30px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s;
+    background: white !important;
+    color: #000;
+  }
+
+  input:focus {
+    background: white;
+    border-color: #0d47a1;
+    color: #000;
+  }
+
+  button {
+    background: #1976d2;
+    color: white;
+    border: none;
+    padding: 0 24px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 0 30px 30px 0;
+    transition: background-color 0.3s;
+  }
+
+  button:hover {
+    background: #0d47a1;
+  }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <div class="chat-box" id="chatBox">
+      <div class="chat-message bot">Hello! I'm your Loan Eligibility Assistant. Are you ready to begin? (Yes/No)</div>
+    </div>
+    <div class="input-container">
+      <input type="text" id="userInput" placeholder="Type your answer..." autocomplete="off" />
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    const chatBox = document.getElementById("chatBox");
+    const userInput = document.getElementById("userInput");
+
+    const questions = [
+      "What is your gender? (Male/Female)",
+      "Are you married? (Yes/No)",
+      "How many dependents do you have? (0/1/2/3+)",
+      "What is your education level? (Graduate/Not Graduate)",
+      "Are you self-employed? (Yes/No)",
+      "What is your monthly applicant income?",
+      "What is your monthly co-applicant income?",
+      "What is the loan amount you are requesting?",
+      "What is the loan term in days?",
+      "What is your credit history score? (300-850)",
+      "What is the area? (Urban/Semiurban/Rural)"
+    ];
+
+    const questionsKeys = [
+      "gender", "married", "dependents", "education", "employed",
+      "ApplicantIncome", "CoapplicantIncome", "LoanAmount", "Loan_Amount_Term",
+      "credit", "area"
+    ];
+
+    let step = -1;
+    let answers = {};
+
+    function addMessage(content, sender, isExplanation = false) {
+      const div = document.createElement("div");
+      if(isExplanation){
+        div.className = "chat-message explanation";
+      } else {
+        div.className = `chat-message ${sender}`;
+      }
+      div.innerText = content;
+      chatBox.appendChild(div);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    async function sendMessage() {
+      const text = userInput.value.trim();
+      if (!text) return;
+      addMessage(text, "user");
+      userInput.value = "";
+
+      if (step === -1) {
+        if (text.toLowerCase() === "yes") {
+          step = 0;
+          addMessage(questions[step], "bot");
+        } else {
+          addMessage("No problem! Type 'Yes' when you're ready to start.", "bot");
+        }
+      } else if (step < questions.length) {
+        answers[questionsKeys[step]] = text;
+        step++;
+        if (step < questions.length) {
+          addMessage(questions[step], "bot");
+        } else {
+          addMessage("Processing your details... please wait.", "bot");
+          await getPrediction();
+        }
+      }
+    }
+
+    async function getPrediction() {
+      try {
+        const res = await fetch("/chatbot_response", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(answers)
+        });
+        const data = await res.json();
+        // Add explanation messages with wider layout
+        addMessage(data.reply, "bot", true);
+      } catch (e) {
+        addMessage("Error connecting to server.", "bot");
+      }
+    }
+
+    userInput.addEventListener("keypress", e => {
+      if (e.key === "Enter") sendMessage();
+    });
+  </script>
+</body>
+</html>

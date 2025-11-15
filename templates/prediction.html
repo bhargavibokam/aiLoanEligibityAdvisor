@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Prediction | Loan Prediction System</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header>
+    <h1>🔮 Loan Prediction</h1>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/about">About</a>
+      <a href="/predict" class="active">Prediction</a>
+      <a href="/chatbot">Chatbot</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <form action="/predict" method="POST" class="form-box">
+      <h2>Enter Your Loan Details</h2>
+
+      <label>Gender:</label>
+      <select name="gender" required>
+        <option>Male</option>
+        <option>Female</option>
+      </select>
+
+      <label>Marital Status:</label>
+      <select name="married" required>
+        <option>Yes</option>
+        <option>No</option>
+      </select>
+
+      <label>Dependents:</label>
+      <select name="dependents" required>
+        <option>0</option><option>1</option><option>2</option><option>3+</option>
+      </select>
+
+      <label>Education:</label>
+      <select name="education" required>
+        <option>Graduate</option><option>Not Graduate</option>
+      </select>
+
+      <label>Self Employed:</label>
+      <select name="employed" required>
+        <option>Yes</option><option>No</option>
+      </select>
+
+      <label>Credit Score:</label>
+      <input type="number" name="credit" min="300" max="850" required>
+
+      <label>Property Area:</label>
+      <select name="area" required>
+        <option>Urban</option><option>Semiurban</option><option>Rural</option>
+      </select>
+
+      <label>Applicant Income:</label>
+      <input type="number" name="ApplicantIncome" required>
+
+      <label>Coapplicant Income:</label>
+      <input type="number" name="CoapplicantIncome" required>
+
+      <label>Loan Amount:</label>
+      <input type="number" name="LoanAmount" required>
+
+      <label>Loan Term (days):</label>
+      <select name="Loan_Amount_Term" required>
+        <option>360</option><option>180</option><option>240</option><option>120</option>
+      </select>
+
+      <button type="submit">Predict Loan Status</button>
+    </form>
+
+    {% if prediction_text %}
+      <div class="result">
+        <h3>{{ prediction_text }}</h3>
+      </div>
+    {% endif %}
+  </main>
+
+  <footer>
+    <p>© 2025 Loan Prediction System</p>
+  </footer>
+</body>
+</html>

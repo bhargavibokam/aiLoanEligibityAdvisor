@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Loan Prediction System</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header>
+    <h1>🚀 Loan Prediction System</h1>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/about">About</a>
+      <a href="/predict">Prediction</a>
+      <a href="/chatbot">Chatbot</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <h2>📋 Welcome to the Loan Prediction System!</h2>
+    <p>This tool helps you predict whether your loan application will be approved or rejected based on your details.</p>
+    <img src="{{ url_for('static', filename='loan.png') }}" alt="Loan Image" class="banner">
+    <section>
+      <h3>🛠️ Project Overview</h3>
+      <p>This project was developed as part of an AI internship at Infosys Springboard. It predicts loan eligibility using machine learning algorithms like Logistic Regression and Decision Trees.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Loan Prediction System | Built with Flask & AI</p>
+  </footer>
+</body>
+</html>
