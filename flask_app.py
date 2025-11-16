@@ -2,30 +2,58 @@ from flask import Flask, render_template, request, jsonify, session, redirect, u
 import pickle
 import numpy as np
 from chatflask import chat_response  # Import Gemini chatbot logic
-
+from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'  # Replace with a secure key
-# Load your trained ML model
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Pass%40MySQlBha%40R@localhost:3306/loan_prediction_db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(150), unique=True, nullable=False)
+    password_hash = db.Column(db.Text, nullable=False)  # Text for long hashes
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
+class LoanApplication(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))  # FK to user table
+    gender = db.Column(db.String(10))
+    married = db.Column(db.String(5))
+    dependents = db.Column(db.String(5))
+    education = db.Column(db.String(30))
+    employed = db.Column(db.String(5))
+    credit = db.Column(db.Float)
+    area = db.Column(db.String(20))
+    ApplicantIncome = db.Column(db.Float)
+    CoapplicantIncome = db.Column(db.Float)
+    LoanAmount = db.Column(db.Float)
+    Loan_Amount_Term = db.Column(db.Integer)
+    prediction_result = db.Column(db.String(20))  # Approved/Rejected
+    timestamp = db.Column(db.DateTime, server_default=db.func.now())
+
+# Load your pre-trained ML model
 model = pickle.load(open("C:/Users/srava/OneDrive/Desktop/Projects/aiLoanEligibityAdvisor/model.pkl", 'rb'))
 
-USERS = {
-    "user@example.com": "password123"  # You can replace with real DB logic later
-}
 @app.context_processor
 def inject_first_name():
     user_email = session.get('user')
     first_name = user_email.split('@')[0] if user_email else None
     return dict(first_name=first_name)
 
-
 @app.route('/')
 def home():
     user_email = session.get('user')
-    if user_email:
-        first_name = user_email.split('@')[0]  # Extract first part before '@'
-    else:
-        first_name = None
+    first_name = user_email.split('@')[0] if user_email else None
     return render_template('index.html', first_name=first_name)
 
 @app.route('/about')
@@ -98,8 +126,9 @@ def login():
     if request.method == 'POST':
         email = request.form.get('email', '').strip()
         password = request.form.get('password', '').strip()
-        if email in USERS and USERS[email] == password:
-            session['user'] = email
+        user = User.query.filter_by(email=email).first()
+        if user and user.check_password(password):
+            session['user'] = user.email
             return redirect(url_for('home'))
         else:
             error = "Invalid email or password."
@@ -118,14 +147,17 @@ def signup():
             error = "All fields are required."
         elif password != confirm_password:
             error = "Passwords do not match."
-        elif email in USERS:
-            error = "User already exists."
         else:
-            USERS[email] = password  # Add user (replace with DB logic)
-            success = "Signup successful! Please login."
-            # You can redirect to login page here if preferred:
-            # return redirect(url_for('login'))
-
+            existing_user = User.query.filter_by(email=email).first()
+            if existing_user:
+                error = "User already exists."
+            else:
+                new_user = User(email=email)
+                new_user.set_password(password)
+                db.session.add(new_user)
+                db.session.commit()
+                success = "Signup successful! Please login."
+                return redirect(url_for('login'))
     return render_template('signup.html', error=error, success=success)
 
 @app.route('/logout')
