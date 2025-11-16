@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sign Up | Loan Prediction System</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+  <header>
+    <h1>🚀 Loan Prediction System</h1>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/about">About</a>
+      <a href="/predict">Prediction</a>
+      <a href="/chatbot">Chatbot</a>
+      <a href="/login">Login</a>
+      <a href="/signup" class="active">Sign Up</a>
+    </nav>
+  </header>
+
+  <main class="login-container">
+    <h2>Create your account</h2>
+
+    {% if error %}
+      <p class="error-msg">{{ error }}</p>
+    {% endif %}
+    {% if success %}
+      <p class="success-msg">{{ success }}</p>
+    {% endif %}
+
+    <form method="POST" action="{{ url_for('signup') }}" class="form-box">
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required placeholder="your.email@example.com" />
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required placeholder="Enter your password" />
+
+      <label for="confirm_password">Confirm Password</label>
+      <input type="password" id="confirm_password" name="confirm_password" required placeholder="Confirm your password" />
+
+      <button type="submit">Sign Up</button>
+    </form>
+
+    <p style="margin-top: 20px;">
+      Already have an account? <a href="{{ url_for('login') }}">Login here</a>.
+    </p>
+  </main>
+
+  <footer>
+    <p>© 2025 Loan Prediction System</p>
+  </footer>
+</body>
+</html>

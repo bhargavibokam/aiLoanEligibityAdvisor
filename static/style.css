@@ -11,6 +11,7 @@ header {
   color: white;
   text-align: center;
   padding: 20px 0;
+  position: relative;
 }
 
 nav {
@@ -24,7 +25,8 @@ nav a {
   font-weight: bold;
 }
 
-nav a.active, nav a:hover {
+nav a.active,
+nav a:hover {
   text-decoration: underline;
 }
 
@@ -35,6 +37,56 @@ nav a.active, nav a:hover {
   padding: 25px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  position: relative;
+}
+
+/* Container between header and main for login button or user info */
+.login-container-header {
+  width: 80%;
+  max-width: 1200px;
+  margin: 15px auto 30px auto; /* top and bottom margin for spacing */
+  display: flex;
+  justify-content: flex-end;  /* right aligned */
+  align-items: center;
+  gap: 15px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Login button styling */
+.login-button {
+  background-color: #2b82d8;
+  color: white;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background-color 0.3s;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.login-button:hover {
+  background-color: #004999;
+}
+
+/* User info when logged in */
+.user-info {
+  font-weight: 600;
+  color: #0066cc;
+  font-size: 16px;
+}
+
+/* Logout link */
+.logout-link {
+  margin-left: 10px;
+  color: #0066cc;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.logout-link:hover {
+  color: #004999;
 }
 
 .form-box label {
@@ -43,7 +95,8 @@ nav a.active, nav a:hover {
   font-weight: 600;
 }
 
-.form-box input, .form-box select {
+.form-box input,
+.form-box select {
   width: 100%;
   padding: 8px;
   margin-top: 5px;
@@ -89,3 +142,84 @@ footer {
   color: white;
   margin-top: 30px;
 }
+
+/* Login page styling */
+.login-container {
+  width: 400px;
+  margin: 40px auto;
+  background-color: white;
+  padding: 30px 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.login-container h2 {
+  color: #0066cc;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.login-container .error-msg {
+  color: #b71c1c;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.login-container form label {
+  color: #004999;
+  font-weight: 600;
+  display: block;
+  margin-top: 15px;
+}
+
+.login-container form input {
+  width: 100%;
+  padding: 10px 12px;
+  margin-top: 5px;
+  border: 2px solid #0066cc;
+  border-radius: 6px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+.login-container form button {
+  width: 100%;
+  margin-top: 20px;
+  background-color: #0066cc;
+  border: none;
+  padding: 14px;
+  font-weight: 700;
+  font-size: 18px;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.login-container form button:hover {
+  background-color: #004999;
+}
+
+.logged-in-text {
+  color: #004999;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/* Responsive tweak: stack main-header line where button is if small screen */
+@media (max-width: 600px) {
+  .login-container-header {
+    justify-content: center;
+    gap: 10px;
+  }
+}
+.success-msg {
+  text-align: center;
+  font-weight: 600;
+  color: #2e7d32;  /* Green to indicate success */
+  margin-bottom: 20px;
+}
+

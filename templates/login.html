@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login | Loan Prediction System</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+  <header>
+    <h1>🚀 Loan Prediction System</h1>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/about">About</a>
+      <a href="/predict">Prediction</a>
+      <a href="/chatbot">Chatbot</a>
+      <a href="/login" class="active">Login</a>
+    </nav>
+  </header>
+
+  <main class="login-container">
+    {% if session.get('user') %}
+      <p class="logged-in-text">
+        Logged in as {{ session.get('user') }}
+        <a href="{{ url_for('logout') }}" class="logout-link">Logout</a>
+      </p>
+      <p><a href="/">Go to Home</a></p>
+    {% else %}
+      <h2>Login to your account</h2>
+
+      {% if error %}
+        <p class="error-msg">{{ error }}</p>
+      {% endif %}
+
+      <form method="POST" action="{{ url_for('login') }}" class="form-box">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required placeholder="your.email@example.com" />
+        
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required placeholder="Enter your password" />
+        
+        <button type="submit">Login</button>
+      </form>
+
+      <p style="margin-top: 20px;">
+  Don't have an account?  <a href="{{ url_for('signup') }}">Create Account</a>
+
+</p>
+
+    {% endif %}
+  </main>
+
+  <footer>
+    <p>© 2025 Loan Prediction System</p>
+  </footer>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
