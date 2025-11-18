@@ -8,9 +8,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'  # Replace with a secure key
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Pass%40MySQlBha%40R@localhost:3306/loan_prediction_db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:<password>@localhost:3306/loan_prediction_db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
+ 
 db = SQLAlchemy(app)
 
 class User(db.Model):

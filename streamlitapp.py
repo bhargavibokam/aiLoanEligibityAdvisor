@@ -162,7 +162,7 @@ def footer():
     st.markdown("### 🌐 Connect with us")
     st.markdown("[LinkedIn]()")
     st.markdown("[GitHub]()")
-    st.markdown("📧 Email: chetanvarmaatla@gmail.com")
+    st.markdown("📧 Email:  bokambhargavi789@gmail.com")
 
 # Sidebar Layout Design Enhancement
 def sidebar_layout():
