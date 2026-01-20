@@ -3,7 +3,7 @@ import numpy as np
 import google.generativeai as genai
 
 # Configure your Google GenAI API key here
-genai.configure(api_key="AIzaSyCpQTry2c4ABXJXVnb_5C4I57YhA05Y9FQ")
+genai.configure(api_key="")
 
 # Load trained model once at module load
 with open('model.pkl', 'rb') as f:
